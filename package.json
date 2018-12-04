@@ -16,6 +16,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "lint": "npx tslint -p .",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -26,5 +27,9 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "tslint": "^5.11.0",
+    "tslint-react": "^3.6.0"
+  }
 }
