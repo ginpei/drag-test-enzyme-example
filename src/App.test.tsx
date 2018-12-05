@@ -7,12 +7,29 @@ import App from './App';
 enzyme.configure({ adapter: new Adapter() });
 
 describe('<App>', () => {
-  it('renders finely', () => {
-    expect(() => {
+  describe('drag', () => {
+    it('moves logo', () => {
       const wrapper = shallow<App>(
         <App/>,
       );
-      expect(wrapper.hasClass('App')).toBeTruthy();
-    }).not.toThrow();
+
+      wrapper.find('.App-logo').simulate('touchstart', {
+        touches: [
+          { clientX: 12, clientY: 34 },
+        ],
+      });
+
+      document.dispatchEvent(new TouchEvent('touchmove', {
+        touches: [
+          { clientX: 112, clientY: 134 } as Touch,
+        ],
+      }));
+
+      document.dispatchEvent(new TouchEvent('touchend'));
+
+      expect(wrapper.state().dragging).toBe(false);
+      expect(wrapper.state().logoLeft).toBe(100);
+      expect(wrapper.state().logoTop).toBe(100);
+    });
   });
 });
