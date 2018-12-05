@@ -25,8 +25,8 @@ class App extends Component<any, IAppState> {
     this.state = {
       dragging: false,
       lastDragPoint: [0, 0],
-      logoLeft: -10,
-      logoTop: -10,
+      logoLeft: 0,
+      logoTop: 0,
     };
     this.onTouchStart = this.onTouchStart.bind(this);
     this.onTouchMove = this.onTouchMove.bind(this);
