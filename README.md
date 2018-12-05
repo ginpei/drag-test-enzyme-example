@@ -1,44 +1,49 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Testing Drag on React + Enzyme
 
-## Available Scripts
+Enzyme uses JSDom, which uses `global.document` .
 
-In the project directory, you can run:
+Simply you can fire the event on it.
 
-### `npm start`
+## Components
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```tsx
+public render () {
+  <div onTouchStart={this.onTouchStart} />
+}
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+public componentDidMount () {
+  document.addEventListener('touchmove', this.onTouchMove);
+  document.addEventListener('touchend', this.onTouchEnd);
+}
+```
 
-### `npm test`
+## Tests
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```tsx
+it('moves target', () => {
+  const wrapper = shallow<DraggableComponent>(
+    <DraggableComponent/>,
+  );
 
-### `npm run build`
+  // start touching on the component
+  wrapper.simulate('touchstart', {
+    touches: [
+      { clientX: 12, clientY: 34 },
+    ],
+  });
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+  // and move on document
+  document.dispatchEvent(new TouchEvent('touchmove', {
+    touches: [
+      { clientX: 112, clientY: 134 } as Touch,
+    ],
+  }));
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+  // then finish
+  document.dispatchEvent(new TouchEvent('touchend'));
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+  expect(wrapper.state().dragging).toBe(false);
+  expect(wrapper.state().dragLeft).toBe(100);
+  expect(wrapper.state().dragTop).toBe(100);
+});
+```
