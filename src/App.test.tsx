@@ -7,7 +7,31 @@ import App from './App';
 enzyme.configure({ adapter: new Adapter() });
 
 describe('<App>', () => {
-  describe('drag', () => {
+  describe('drag by mouse', () => {
+    it('moves logo', () => {
+      const wrapper = shallow<App>(
+        <App/>,
+      );
+
+      wrapper.find('.App-logo').simulate('mousedown', {
+        clientX: 12,
+        clientY: 34,
+      });
+
+      document.dispatchEvent(new MouseEvent('mousemove', {
+        clientX: 112,
+        clientY: 134,
+      }));
+
+      document.dispatchEvent(new MouseEvent('mouseup'));
+
+      expect(wrapper.state().dragging).toBe(false);
+      expect(wrapper.state().logoLeft).toBe(100);
+      expect(wrapper.state().logoTop).toBe(100);
+    });
+  });
+
+  describe('drag by touching', () => {
     it('moves logo', () => {
       const wrapper = shallow<App>(
         <App/>,
