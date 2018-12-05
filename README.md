@@ -1,4 +1,4 @@
-# Testing Drag on React + Enzyme
+# Testing Drag on React, TypeScript, Jest, and Enzyme
 
 Enzyme uses JSDom, which uses `global.document` .
 
