@@ -6,6 +6,8 @@ Simply you can fire the event on it.
 
 ## Components
 
+- [src/App.tsx](https://github.com/ginpei/drag-test-enzyme-example/blob/master/src/App.tsx)
+
 ```tsx
 public render () {
   <div onTouchStart={this.onTouchStart} />
@@ -18,6 +20,8 @@ public componentDidMount () {
 ```
 
 ## Tests
+
+- [src/App.test.tsx](https://github.com/ginpei/drag-test-enzyme-example/blob/master/src/App.test.tsx)
 
 ```tsx
 it('moves target', () => {
